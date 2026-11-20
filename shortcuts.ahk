@@ -1,0 +1,37 @@
+#Requires AutoHotkey v2.0
+
+; Win+Q - reload
+#q::Reload
+
+; Win press/release - don't open Start Menu (done in copilot_key.ahk instead)
+;~LWin::vkE8
+;~LWin::Send "{Blind}{vkE8}"
+
+; Win+Space - disable, use Alt+Shift instead
+; #Space::return
+
+; Win+Space - PowerToys FancyZones editor (layout switcher)
+#Space::+#`
+
+; Win+M - minimise active
+; Shift+Win+M - minimise all
+#m::WinMinimize "A"
++#m::#m
+
+; Win+W - maximise toggle
+#w:: {
+	if WinExist("A") {
+		if WinGetMinMax() = 1
+			WinRestore
+		else
+			WinMaximize
+	}
+}
+; TODO: Win+Shift+W - maximise; Win+W - toggle full layout in FancyZones?
+
+; Win+Esc - close window
+#Esc::WinClose "A"
+
+; Win+L - can't remap? :-(
+; Win+; - lock screen
+#;::#l
