@@ -53,6 +53,8 @@ _DragMoveResize(Button, Resize) {
 	; Move/Resize the window.
 	MouseGetPos(&mouseX1, &mouseY1)
 	WinGetPos(&winX1, &winY1, &winW, &winH)
+	if Resize
+		MouseMove(winX1 + winW, winY1 + winH)
 	Loop {
 		if !GetKeyState(Button, "P") ; Break if button has been released.
 			break
@@ -61,8 +63,10 @@ _DragMoveResize(Button, Resize) {
 		if !Resize
 			WinMove(winX1 + mouseX2 - mouseX1, winY1 + mouseY2 - mouseY1)
 		else
-			WinMove(, , winW + mouseX2 - mouseX1, winH + mouseY2 - mouseY1)
+			WinMove(, , mouseX2 - winX1, mouseY2 - winY1)
 	}
+	if Resize
+		MouseMove(mouseX1, mouseY1)
 }
 
 LWin & LButton::DragMoveResize("LButton", false)
