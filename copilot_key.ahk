@@ -10,8 +10,7 @@ LShiftFirstDown := 0
 	}
 
 	; Win press/release - don't open Start Menu
-	; FIXME: doesn't work well
-	SetTimer () => Send("{Blind}{vkE8}"), -1
+	SetTimer () => WithoutKeyDelay(SendEvent, "{Blind}{vkE8}"), -10
 }
 ~*LShift:: {
 	global LShiftFirstDown
@@ -24,27 +23,37 @@ LShiftFirstDown := 0
 ~*LShift Up:: {
 	global LShiftFirstDown := 0
 }
+LastCopilot := ""
 <+<#F23:: {
-	global LWinFirstDown
-	global LShiftFirstDown
-	tick := A_TickCount
-
 	; Delay longer than "thr" between LWin/LShift and F23 is considered as separate keys.
 	; Copilot key sends all 3 keys at once, so it's usually either 0 or 16
 	thr := 30
 
-	;MsgBox "Copilot: " . (tick - LWinFirstDown) . " " . (tick - LShiftFirstDown)
+	; Save the elapsed time between the first LWin/LShift key press and the whole combo.
+	global LWinFirstDown
+	global LShiftFirstDown
 	if LWinFirstDown = 0 || LShiftFirstDown = 0
 		throw Error("LWinFirstDown = 0 || LShiftFirstDown = 0")
+	tick := A_TickCount
+	lWin := (tick - LWinFirstDown) > thr
+	lShift := (tick - LShiftFirstDown) > thr
 
-	if (tick - LWinFirstDown <= thr && tick - LShiftFirstDown <= thr) ; Copilot only
+	; Wait for all three keys to be released and their release to be processed.
+	KeyWait "F23", "L"
+	KeyWait "LShift", "L"
+	KeyWait "LWin", "L"
+	Sleep(0)
+
+	; The global vars are 0 now.
+	if LWinFirstDown != 0 || LShiftFirstDown != 0
+		throw Error("LWinFirstDown != 0 || LShiftFirstDown != 0")
+
+	if !lWin && !lShift
 		Send "#!{Space}" ; PowerToys Command Palette (default key shortcut)
-	else if (tick - LWinFirstDown > thr && tick - LShiftFirstDown <= thr) ; Win+Copilot
+	else if lWin && !lShift
 		Run "wt.exe --profile Debian" ; Terminal - WSL
-	else if (tick - LWinFirstDown <= thr && tick - LShiftFirstDown > thr) ; Shift+Copilot
+	else if !lWin && lShift
 		Send "{PrintScreen}" ; TODO: flameshot instead
-	else if (tick - LWinFirstDown > thr && tick - LShiftFirstDown > thr) ; Win+Shift+Copilot
+	else if lWin && lShift
 		Run "wt.exe --profile Debian" ; TODO: untiled window
-
-	KeyWait "F23"
 }
