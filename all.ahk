@@ -1,3 +1,7 @@
+; deps
+#Include "lib/Acc.ahk"
+
+; hotkeys
 #Include "caps_lock.ahk"
 #Include "copilot_key.ahk"
 #Include "chrome_alt_n_tabs.ahk"
