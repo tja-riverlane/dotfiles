@@ -1,17 +1,8 @@
 #Requires AutoHotkey v2.0
 
-; Win+Q - reload
-#q::Reload
-
-; Win press/release - don't open Start Menu (done in copilot_key.ahk instead)
-;~LWin::vkE8
-;~LWin::Send "{Blind}{vkE8}"
-
-; Win+Space - disable, use Alt+Shift instead
-; #Space::return
-
 ; Win+Space - PowerToys FancyZones editor (layout switcher)
 #Space::+#`
+; #Space::return ; disable keyboard layout switching
 
 ; Win+M - minimise active
 ; Shift+Win+M - minimise all
