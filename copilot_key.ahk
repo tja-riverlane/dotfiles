@@ -40,11 +40,11 @@ LShiftFirstDown := 0
 	if (tick - LWinFirstDown <= thr && tick - LShiftFirstDown <= thr) ; Copilot only
 		Send "#!{Space}" ; PowerToys Command Palette (default key shortcut)
 	else if (tick - LWinFirstDown > thr && tick - LShiftFirstDown <= thr) ; Win+Copilot
-		Run "wt.exe -d ~ wsl.exe" ; Terminal - WSL
+		Run "wt.exe --profile Debian" ; Terminal - WSL
 	else if (tick - LWinFirstDown <= thr && tick - LShiftFirstDown > thr) ; Shift+Copilot
 		Send "{PrintScreen}" ; TODO: flameshot instead
 	else if (tick - LWinFirstDown > thr && tick - LShiftFirstDown > thr) ; Win+Shift+Copilot
-		Run "wt.exe -d ~ wsl.exe" ; TODO: untiled window
+		Run "wt.exe --profile Debian" ; TODO: untiled window
 
 	KeyWait "F23"
 }
