@@ -12,22 +12,8 @@ IsNormalWindow(WinTitle?) {
 	}
 }
 
-WithWinDelay(D, F, Args*) {
-	saved := A_WinDelay, A_WinDelay := D
-	ret := F(Args*)
-	A_WinDelay := saved
-	return ret
-}
-
-WithCoordMode(TargetType, RelativeTo, F, Args*) {
-	saved := CoordMode(TargetType, RelativeTo?)
-	ret := F(Args*)
-	CoordMode(TargetType, saved)
-	return ret
-}
-
 DragMoveResize(Button, Resize) {
-	WithWinDelay(20, () => WithCoordMode("Mouse", "Screen", _DragMoveResize, Button, Resize))
+	WithWinDelay(20, WithCoordMode, "Mouse", "Screen", _DragMoveResize, Button, Resize)
 }
 
 _DragMoveResize(Button, Resize) {
@@ -40,7 +26,7 @@ _DragMoveResize(Button, Resize) {
 
 	; If the window is maximized, restore the initial position
 	; and size of the window and center the mouse.
-	If WinGetMinMax() {
+	if WinGetMinMax() {
 		WinRestore()
 		WinGetPos(&winX1, &winY1, &winW, &winH)
 		MouseMove((winX1 + (winW / 2)), (winY1 + (winH / 2)), 0)
