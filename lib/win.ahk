@@ -108,9 +108,20 @@ GetMonitorByMouse(WorkArea?) {
 	return GetMonitorByPos(mouseX, mouseY, WorkArea?)
 }
 
+GetMonitorByActive(WorkArea?) {
+	if !WinExist("A")
+		return
+
+	WinGetPos(&wX, &wY, &wW, &wH)
+	winCenterX := wX + (wW / 2)
+	winCenterY := wY + (wH / 2)
+
+	return GetMonitorByPos(winCenterX, winCenterY, WorkArea?)
+}
+
 ; Cycle focus to the next monitor.
 CycleMonitors() {
-	monitor := GetMonitorByMouse(true)
+	monitor := GetMonitorByActive(true)
 	if !monitor
 		return
 
