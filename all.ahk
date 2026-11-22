@@ -1,3 +1,5 @@
+#Requires AutoHotkey v2.0
+
 ; deps
 #Include "lib/Acc.ahk"
 #Include "lib/with.ahk"
@@ -9,6 +11,7 @@
 #Include "chrome_alt_n_tabs.ahk"
 #Include "shortcuts.ahk"
 #Include "mouse_drag.ahk"
+#Include "no_round_corners.ahk"
 
 ; Win+Q - reload
 #q::Reload
