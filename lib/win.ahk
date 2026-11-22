@@ -162,7 +162,7 @@ _SwitchWindow(Direction?, Index?) {
 	if !monitor
 		return
 
-	wins := SortWinsColumnMajor(WinGetListNormal(monitor))
+	wins := FilterOutObscuredWins(SortWinsColumnMajor(WinGetListNormal(monitor)))
 
 	if IsSet(Direction) {
 		; Find current window index.
@@ -179,16 +179,46 @@ _SwitchWindow(Direction?, Index?) {
 		WinActivateMouse(wins[Index])
 }
 
-SortWinsColumnMajor(wins) {
+SortWinsColumnMajor(wins, Pos?) {
+	if !IsSet(Pos)
+		Pos := GetPosMap(wins)
+
+	; TODO: tolerance?
+	InsertionSort(wins, (a, b) => Pos[a].x = Pos[b].x ? Pos[a].y < Pos[b].y : Pos[a].x < Pos[b].x)
+	return wins
+}
+
+FilterOutObscuredWins(wins, Pos?) {
+	if !IsSet(Pos)
+		Pos := GetPosMap(wins)
+
+	visible := []
+	for win in wins {
+		winRect := Pos[win]
+
+		obscured := false
+		for v in visible {
+			vRect := Pos[v]
+			if (vRect.x <= winRect.x && vRect.y <= winRect.y
+			&& (vRect.x + vRect.w) >= (winRect.x + winRect.w)
+			&& (vRect.y + vRect.h) >= (winRect.y + winRect.h)) {
+				obscured := true
+				break
+			}
+		}
+		if !obscured
+			visible.Push(win)
+	}
+	return visible
+}
+
+GetPosMap(wins) {
 	pos := Map()
 	for win in wins {
 		WinGetPos(&X, &Y, &W, &H, win)
-		pos[win] := {x: X, y: Y}
+		pos[win] := {x: X, y: Y, w: W, h: H}
 	}
-
-	; TODO: tolerance?
-	InsertionSort(wins, (a, b) => pos[a].x = pos[b].x ? pos[a].y < pos[b].y : pos[a].x < pos[b].x)
-	return wins
+	return pos
 }
 
 ; TODO: move elsewhere
