@@ -31,15 +31,37 @@
 ; TODO: Win+J - next window on current screen
 ; TODO: Win+K - prev window on current screen
 
+; TODO: Alt-F1 - workspace 1, ...
+
 ; Win+L - can't remap? :-(
 ; Win+; - lock screen
 #;::#l
 
 ; Shift+Win+Arrows - FancyZones moves
-+#Left::#Left
-+#Right::#Right
-+#Up::#Up
-+#Down::#Down
++#Left:: {
+	if WinExist("A") {
+		Send "#{Left}"
+		WinActivateMouse
+	}
+}
++#Right:: {
+	if WinExist("A") {
+		Send "#{Right}"
+		WinActivateMouse
+	}
+}
++#Up:: {
+	if WinExist("A") {
+		Send "#{Up}"
+		WinActivateMouse
+	}
+}
++#Down:: {
+	if WinExist("A") {
+		Send "#{Down}"
+		WinActivateMouse
+	}
+}
 
 ; Win+Arrows - media keys
 #Left::Media_Prev
