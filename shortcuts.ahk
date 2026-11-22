@@ -17,6 +17,7 @@
 			WinRestore
 		else
 			WinMaximize
+		WinActivateMouse
 	}
 }
 ; TODO: Win+Shift+W - maximise; Win+W - toggle full layout in FancyZones?
