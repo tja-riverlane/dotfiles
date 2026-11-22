@@ -21,8 +21,7 @@ _DragMoveResize(Button, Resize) {
 	}
 
 	; Bring to the front.
-	WinSetAlwaysOnTop(1)
-	WinSetAlwaysOnTop(0)
+	WinRaise()
 
 	; Move/Resize the window.
 	MouseGetPos(&mouseX1, &mouseY1)

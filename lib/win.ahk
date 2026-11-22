@@ -67,6 +67,14 @@ WinActivateMouse(WinTitle?) {
 		WithCoordMode("Mouse", "Screen", MouseMove, X + W / 2, Y + H / 2)
 }
 
+WinRaise(WinTitle?) {
+	if !WinExist(WinTitle?)
+		return
+
+	WinSetAlwaysOnTop(1)
+	WinSetAlwaysOnTop(0)
+}
+
 GetMonitorByPos(X, Y, WorkArea?) {
 	loop {
 		try {
@@ -100,6 +108,10 @@ CycleMonitors() {
 	} catch {
 		monitor := 1
 	}
+
+	; Bring the current window to the front.
+	; (Otherwise we wouldn't return back to it.)
+	WinRaise("A")
 
 	; Find the first window on the target monitor.
 	MonitorGetWorkArea(monitor, &L, &T, &R, &B)
