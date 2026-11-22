@@ -112,18 +112,31 @@ GetMonitorByActive(WorkArea?) {
 }
 
 ; Cycle focus to the next monitor.
-; TODO: direction
-CycleMonitors() {
-	monitor := GetMonitorByMouse(true)
-	if !monitor
-		return
+CycleMonitors(Direction := 1) {
+	_SwitchMonitor(Direction)
+}
 
-	; Determine the next monitor.
-	monitor += 1
-	try {
-		MonitorGet(monitor)
-	} catch {
-		monitor := 1
+FocusMonitor(Index) {
+	_SwitchMonitor(, Index)
+}
+
+_SwitchMonitor(Direction?, Monitor?) {
+	; TODO: ignore inactive monitors (use Index and map to physical monitors)
+
+	if IsSet(Monitor) {
+		try {
+			MonitorGet(Monitor)
+		} catch {
+			return
+		}
+	} else if IsSet(Direction) {
+		Monitor := GetMonitorByMouse(true)
+		if !Monitor
+			return
+
+		; Determine the next monitor.
+		count := MonitorGetCount()
+		Monitor := Mod(count + Monitor - 1 + Direction, count) + 1
 	}
 
 	; Bring the current window to the front.
