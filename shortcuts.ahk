@@ -14,9 +14,9 @@
 #w:: {
 	if WinExist("A") {
 		if WinGetMinMax() = 1
-			WinRestore
+			WithWinDelay(-1, WinRestore)
 		else
-			WinMaximize
+			WithWinDelay(-1, WinMaximize)
 		WinActivateMouse
 	}
 }
