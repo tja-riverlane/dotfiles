@@ -72,7 +72,7 @@ WinActivateMouse(WinTitle?) {
 	if !WinExist(WinTitle?)
 		return
 
-	WinActivate()
+	WithWinDelay(-1, WinActivate)
 
 	WinGetPos(&X, &Y, &W, &H)
 	WithCoordMode("Mouse", "Screen", MouseGetPos, &mX, &mY)
