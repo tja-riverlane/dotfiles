@@ -130,17 +130,9 @@ _SwitchMonitor(Direction?, Index?) {
 			return
 		}
 	} else if IsSet(Direction) {
-		; Find current monitor index and advance in Direction.
-		monitor := GetMonitorByMouse(true)
+		monitor := Advance(GetMonitorByMouse(true), monitors, Direction)
 		if !monitor
 			return
-
-		for i, m in monitors {
-			if m = monitor {
-				monitor := monitors[Mod(monitors.Length + i - 1 + Direction, monitors.Length) + 1]
-				break
-			}
-		}
 	}
 
 	; Bring the current window to the front.
@@ -173,19 +165,30 @@ _SwitchWindow(Direction?, Index?) {
 
 	wins := FilterOutObscuredWins(SortWinsColumnMajor(WinGetListNormal(monitor)))
 
-	if IsSet(Direction) {
-		; Find current window index and advance in Direction.
-		curW := WinExist("A")
-		for i, w in wins {
-			if w = curW {
-				index := Mod(wins.Length + i - 1 + Direction, wins.Length) + 1
-				break
-			}
+	if IsSet(Index) {
+		try {
+			win := wins[Index]
+		} catch IndexError {
+			return
 		}
+	} else if IsSet(Direction) {
+		win := Advance(WinExist("A"), wins, Direction)
+		if !win
+			return
 	}
 
-	if IsSet(Index) && Index > 0 && Index <= wins.Length
-		WinActivateMouse(wins[Index])
+	WinActivateMouse(win)
+}
+
+Advance(Cur, L, Direction) {
+	if !Cur
+		return
+
+	for i, x in L {
+		if x = Cur {
+			return L[Mod(L.Length + i - 1 + Direction, L.Length) + 1]
+		}
+	}
 }
 
 SortWinsColumnMajor(wins, Pos?) {
