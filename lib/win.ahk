@@ -120,23 +120,27 @@ FocusMonitor(Index) {
 	_SwitchMonitor(, Index)
 }
 
-_SwitchMonitor(Direction?, Monitor?) {
-	; TODO: ignore inactive monitors (use Index and map to physical monitors)
+_SwitchMonitor(Direction?, Index?) {
+	monitors := GetMonitorsRowMajor()
 
-	if IsSet(Monitor) {
+	if IsSet(Index) {
 		try {
-			MonitorGet(Monitor)
-		} catch {
+			monitor := monitors[index]
+		} catch IndexError {
 			return
 		}
 	} else if IsSet(Direction) {
-		Monitor := GetMonitorByMouse(true)
-		if !Monitor
+		; Find current monitor index and advance in Direction.
+		monitor := GetMonitorByMouse(true)
+		if !monitor
 			return
 
-		; Determine the next monitor.
-		count := MonitorGetCount()
-		Monitor := Mod(count + Monitor - 1 + Direction, count) + 1
+		for i, m in monitors {
+			if m = monitor {
+				monitor := monitors[Mod(monitors.Length + i - 1 + Direction, monitors.Length) + 1]
+				break
+			}
+		}
 	}
 
 	; Bring the current window to the front.
@@ -170,7 +174,7 @@ _SwitchWindow(Direction?, Index?) {
 	wins := FilterOutObscuredWins(SortWinsColumnMajor(WinGetListNormal(monitor)))
 
 	if IsSet(Direction) {
-		; Find current window index.
+		; Find current window index and advance in Direction.
 		curW := WinExist("A")
 		for i, w in wins {
 			if w = curW {
@@ -217,6 +221,21 @@ FilterOutObscuredWins(wins, Pos?) {
 	return visible
 }
 
+GetMonitorsRowMajor(Pos?) {
+	; TODO: skip inactive/duplicate/covered monitors
+
+	if !IsSet(Pos)
+		Pos := GetMonitorPosMap()
+
+	mons := []
+	for i, _ in Pos {
+		mons.Push(i)
+	}
+
+	InsertionSort(mons, (a, b) => Pos[a].t = Pos[b].t ? Pos[a].l < Pos[b].l : Pos[a].t < Pos[b].t)
+	return mons
+}
+
 GetPosMap(wins) {
 	pos := Map()
 	for win in wins {
@@ -224,6 +243,21 @@ GetPosMap(wins) {
 		pos[win] := {x: X, y: Y, w: W, h: H}
 	}
 	return pos
+}
+
+GetMonitorPosMap(WorkArea?) {
+	pos := Map()
+	loop {
+		try {
+			if WorkArea ?? false
+				MonitorGetWorkArea(A_Index, &L, &T, &R, &B)
+			else
+				MonitorGet(A_Index, &L, &T, &R, &B)
+			pos[A_Index] := {l: L, t: T, r: R, b: B}
+		} catch {
+			return pos
+		}
+	}
 }
 
 ; TODO: move elsewhere
