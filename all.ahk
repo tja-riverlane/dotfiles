@@ -1,6 +1,7 @@
 ; deps
 #Include "lib/Acc.ahk"
 #Include "lib/with.ahk"
+#Include "lib/win.ahk"
 
 ; hotkeys
 #Include "caps_lock.ahk"

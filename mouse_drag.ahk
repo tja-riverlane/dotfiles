@@ -1,27 +1,15 @@
 #Requires AutoHotkey v2.0
 
-IsNormalWindow(WinTitle?) {
-	winClass := WinGetClass(WinTitle?)
-
-	; Exclude common system and desktop classes
-	switch winClass {
-		case "Progman", "WorkerW", "Shell_TrayWnd", "Shell_SecondaryTrayWnd":
-			return false
-		default:
-			return true
-	}
-}
-
 DragMoveResize(Button, Resize) {
 	WithWinDelay(20, WithCoordMode, "Mouse", "Screen", _DragMoveResize, Button, Resize)
 }
 
 _DragMoveResize(Button, Resize) {
-	MouseGetPos(, , &win_id)
-	if !WinExist("ahk_id " win_id)
+	MouseGetPos(, , &w)
+	if !w
 		return
 
-	if !IsNormalWindow()
+	if !IsNormalWindow(w)
 		return
 
 	; If the window is maximized, restore the initial position

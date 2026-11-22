@@ -8,6 +8,7 @@
 ; Shift+Win+M - minimise all
 #m::WinMinimize "A"
 +#m::#m
+; TODO: bind minimise to something else - Win+M in xmonad is mirror layout
 
 ; Win+W - maximise toggle
 #w:: {
@@ -22,6 +23,13 @@
 
 ; Win+Esc - close window
 #Esc::WinClose "A"
+
+; Win+Tab - cycle focus to next monitor
+#Tab::CycleMonitors()
+; TODO: Shift+Win+Tab - swap monitors (send shortcut to FancyZones? it's super slow though)
+
+; TODO: Win+J - next window on current screen
+; TODO: Win+K - prev window on current screen
 
 ; Win+L - can't remap? :-(
 ; Win+; - lock screen
