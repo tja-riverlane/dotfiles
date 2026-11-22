@@ -122,18 +122,8 @@ FocusMonitor(Index) {
 
 _SwitchMonitor(Direction?, Index?) {
 	monitors := GetMonitorsRowMajor()
-
-	if IsSet(Index) {
-		try {
-			monitor := monitors[index]
-		} catch IndexError {
-			return
-		}
-	} else if IsSet(Direction) {
-		monitor := Advance(GetMonitorByMouse(true), monitors, Direction)
-		if !monitor
-			return
-	}
+	if !monitor := _ByDirectionOrIndex(() => GetMonitorByMouse(true), monitors, Direction?, Index?)
+		return
 
 	; Bring the current window to the front.
 	; (Otherwise we wouldn't return back to it.)
@@ -159,35 +149,32 @@ FocusWindow(Index) {
 }
 
 _SwitchWindow(Direction?, Index?) {
-	monitor := GetMonitorByActive(true)
-	if !monitor
+	if !monitor := GetMonitorByActive(true)
 		return
 
 	wins := FilterOutObscuredWins(SortWinsColumnMajor(WinGetListNormal(monitor)))
+	if win := _ByDirectionOrIndex(() => WinExist("A"), wins, Direction?, Index?)
+		WinActivateMouse(win)
+}
 
+_ByDirectionOrIndex(GetCur, L, Direction?, Index?) {
 	if IsSet(Index) {
 		try {
-			win := wins[Index]
+			return L[Index]
 		} catch IndexError {
 			return
 		}
 	} else if IsSet(Direction) {
-		win := Advance(WinExist("A"), wins, Direction)
-		if !win
+		if !cur := GetCur()
 			return
-	}
 
-	WinActivateMouse(win)
-}
-
-Advance(Cur, L, Direction) {
-	if !Cur
-		return
-
-	for i, x in L {
-		if x = Cur {
-			return L[Mod(L.Length + i - 1 + Direction, L.Length) + 1]
+		for i, x in L {
+			if x = cur {
+				return L[Mod(L.Length + i - 1 + Direction, L.Length) + 1]
+			}
 		}
+	} else {
+		throw Error("_ByDirectionOrIndex: neither Direction nor Index")
 	}
 }
 
