@@ -114,7 +114,7 @@ GetMonitorByActive(WorkArea?) {
 ; Cycle focus to the next monitor.
 ; TODO: direction
 CycleMonitors() {
-	monitor := GetMonitorByActive(true)
+	monitor := GetMonitorByMouse(true)
 	if !monitor
 		return
 
