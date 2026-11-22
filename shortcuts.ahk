@@ -33,6 +33,18 @@
 #j::CycleWindows(1)
 #k::CycleWindows(-1)
 
+; Win+1/2/3/4/5/6/7/8/9/0 - focus window on current screen
+#1::FocusWindow(1)
+#2::FocusWindow(2)
+#3::FocusWindow(3)
+#4::FocusWindow(4)
+#5::FocusWindow(5)
+#6::FocusWindow(6)
+#7::FocusWindow(7)
+#8::FocusWindow(8)
+#9::FocusWindow(9)
+#0::FocusWindow(10)
+
 ; TODO: Alt-F1 - workspace 1, ...
 
 ; Win+L - can't remap? :-(

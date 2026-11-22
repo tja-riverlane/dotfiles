@@ -150,27 +150,33 @@ CycleMonitors() {
 
 ; Cycle focus to the next window
 CycleWindows(Direction := 1) {
+	_SwitchWindow(Direction)
+}
+
+FocusWindow(Index) {
+	_SwitchWindow(, Index)
+}
+
+_SwitchWindow(Direction?, Index?) {
 	monitor := GetMonitorByActive(true)
 	if !monitor
 		return
 
 	wins := SortWinsColumnMajor(WinGetListNormal(monitor))
 
-	; Find current window index.
-	curW := WinExist("A")
-	index := 0
-	for i, w in wins {
-		if w = curW {
-			index := i
-			break
+	if IsSet(Direction) {
+		; Find current window index.
+		curW := WinExist("A")
+		for i, w in wins {
+			if w = curW {
+				index := Mod(wins.Length + i - 1 + Direction, wins.Length) + 1
+				break
+			}
 		}
 	}
-	if !index
-		return
 
-	; Activate the next/prev window
-	index := Mod(wins.Length + index - 1 + Direction, wins.Length) + 1
-	WinActivateMouse(wins[index])
+	if IsSet(Index) && Index > 0 && Index <= wins.Length
+		WinActivateMouse(wins[Index])
 }
 
 SortWinsColumnMajor(wins) {
