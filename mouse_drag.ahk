@@ -21,7 +21,7 @@ _DragMoveResize(Button, Resize) {
 	}
 
 	; Bring to the front.
-	WinRaise()
+	WinMoveTop()
 
 	; Move/Resize the window.
 	MouseGetPos(&mouseX1, &mouseY1)
