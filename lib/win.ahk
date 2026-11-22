@@ -36,11 +36,24 @@ IsNormalWindow(WinTitle?) {
 	return true
 }
 
-WinGetListNormal() {
+WinGetListNormal(Monitor?) {
+	if IsSet(Monitor)
+		MonitorGetWorkArea(Monitor, &L, &T, &R, &B)
+
 	res := []
 	for w in WinGetList() {
-		if IsNormalWindow(w)
-			res.Push(w)
+		if !IsNormalWindow(w)
+			continue
+
+		if IsSet(Monitor) {
+			WinGetPos(&wX, &wY, &wW, &wH, w)
+			winCenterX := wX + (wW / 2)
+			winCenterY := wY + (wH / 2)
+			if !(winCenterX >= L && winCenterX < R && winCenterY >= T && winCenterY < B)
+				continue
+		}
+
+		res.Push(w)
 	}
 	return res
 }
@@ -113,17 +126,12 @@ CycleMonitors() {
 	; (Otherwise we wouldn't return back to it.)
 	WinRaise("A")
 
-	; Find the first window on the target monitor.
-	MonitorGetWorkArea(monitor, &L, &T, &R, &B)
-	for w in WinGetListNormal() {
-		WinGetPos(&wX, &wY, &wW, &wH, w)
-		winCenterX := wX + (wW / 2)
-		winCenterY := wY + (wH / 2)
-		if winCenterX >= L && winCenterX < R && winCenterY >= T && winCenterY < B {
-			return WinActivateMouse(w)
-		}
+	; Activate first window on the target monitor.
+	for w in WinGetListNormal(monitor) {
+		return WinActivateMouse(w)
 	}
 
 	; Fallback: center mouse on the target monitor.
+	MonitorGetWorkArea(monitor, &L, &T, &R, &B)
 	WithCoordMode("Mouse", "Screen", MouseMove, L + (R - L) / 2, T + (B - T) /2)
 }
