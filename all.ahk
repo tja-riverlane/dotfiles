@@ -12,6 +12,7 @@
 #Include "shortcuts.ahk"
 #Include "mouse_drag.ahk"
 #Include "no_round_corners.ahk"
+#Include "ctrl_w.ahk"
 
 ; Win+Q - reload
 #q::Reload
