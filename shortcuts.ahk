@@ -29,8 +29,9 @@
 #Tab::CycleMonitors()
 ; TODO: Shift+Win+Tab - swap monitors (send shortcut to FancyZones? it's super slow though)
 
-; TODO: Win+J - next window on current screen
-; TODO: Win+K - prev window on current screen
+; Win+J/K - next/prev window on current screen
+#j::CycleWindows(1)
+#k::CycleWindows(-1)
 
 ; TODO: Alt-F1 - workspace 1, ...
 

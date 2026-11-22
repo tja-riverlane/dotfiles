@@ -16,7 +16,7 @@ IsNormalWindow(WinTitle?) {
 	}
 
 	; Skip minimised windows.
-	if WinGetMinMax() == -1
+	if WinGetMinMax() = -1
 		return false
 
 	; Skip ToolWindows unless they have an AppWindow style.
@@ -120,6 +120,7 @@ GetMonitorByActive(WorkArea?) {
 }
 
 ; Cycle focus to the next monitor.
+; TODO: direction
 CycleMonitors() {
 	monitor := GetMonitorByActive(true)
 	if !monitor
@@ -145,4 +146,57 @@ CycleMonitors() {
 	; Fallback: center mouse on the target monitor.
 	MonitorGetWorkArea(monitor, &L, &T, &R, &B)
 	WithCoordMode("Mouse", "Screen", MouseMove, L + (R - L) / 2, T + (B - T) /2)
+}
+
+; Cycle focus to the next window
+CycleWindows(Direction := 1) {
+	monitor := GetMonitorByActive(true)
+	if !monitor
+		return
+
+	wins := SortWinsColumnMajor(WinGetListNormal(monitor))
+
+	; Find current window index.
+	curW := WinExist("A")
+	index := 0
+	for i, w in wins {
+		if w = curW {
+			index := i
+			break
+		}
+	}
+	if !index
+		return
+
+	; Activate the next/prev window
+	index := Mod(wins.Length + index - 1 + Direction, wins.Length) + 1
+	WinActivateMouse(wins[index])
+}
+
+SortWinsColumnMajor(wins) {
+	pos := Map()
+	for win in wins {
+		WinGetPos(&X, &Y, &W, &H, win)
+		pos[win] := {x: X, y: Y}
+	}
+
+	; TODO: tolerance?
+	InsertionSort(wins, (a, b) => pos[a].x = pos[b].x ? pos[a].y < pos[b].y : pos[a].x < pos[b].x)
+	return wins
+}
+
+; TODO: move elsewhere
+InsertionSort(A, LessThan := (a,b) => a < b) {
+	i := 1
+	while (i < A.Length) {
+		x := A[i + 1]
+		j := i
+		while (j > 0 && LessThan(x, A[j])) {
+			A[j + 1] := A[j]
+			j -= 1
+		}
+		A[j + 1] := x
+		i += 1
+	}
+	return A
 }

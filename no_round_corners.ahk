@@ -5,7 +5,7 @@ OnMessage(DllCall("RegisterWindowMessage", "Str", "SHELLHOOK"), OnShellMessage)
 
 OnShellMessage(wParam, lParam, msg, hwnd) {
     ; HSHELL_WINDOWCREATED := 1
-    if (wParam == 1) {
+    if (wParam = 1) {
         SetSquareCorners(lParam)
     }
 }
