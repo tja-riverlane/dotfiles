@@ -36,7 +36,11 @@
 #j::CycleWindows(1)
 #k::CycleWindows(-1)
 
-; Win+1/2/3/4/5/6/7/8/9/0 - focus window on current screen
+; Shift+Win+J/K - swap with next/prev window on current screen (keep focus - move current)
++#j::SwapWindowUpDown(1)
++#k::SwapWindowUpDown(-1)
+
+; Win+1/2/3/... - focus window on current screen
 #1::FocusWindow(1)
 #2::FocusWindow(2)
 #3::FocusWindow(3)
@@ -47,6 +51,18 @@
 #8::FocusWindow(8)
 #9::FocusWindow(9)
 #0::FocusWindow(10)
+
+; Shift+Win+1/2/3/... - swap window with another on current screen (focus new - switch to target)
++#1::SwapWindowWith(1)
++#2::SwapWindowWith(2)
++#3::SwapWindowWith(3)
++#4::SwapWindowWith(4)
++#5::SwapWindowWith(5)
++#6::SwapWindowWith(6)
++#7::SwapWindowWith(7)
++#8::SwapWindowWith(8)
++#9::SwapWindowWith(9)
++#0::SwapWindowWith(10)
 
 ; TODO: Alt-F1 - workspace 1, ...
 

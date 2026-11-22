@@ -152,9 +152,43 @@ _SwitchWindow(Direction?, Index?) {
 	if !monitor := GetMonitorByActive(true)
 		return
 
-	wins := FilterOutObscuredWins(SortWinsColumnMajor(WinGetListNormal(monitor)))
+	wins := WinGetListNormal(monitor)
+	pos := GetPosMap(wins)
+	wins := SortWinsColumnMajor(wins, pos)
+	wins := FilterOutObscuredWins(wins, pos)
+
 	if win := _ByDirectionOrIndex(() => WinExist("A"), wins, Direction?, Index?)
 		WinActivateMouse(win)
+}
+
+SwapWindowUpDown(Direction := 1) {
+	_SwapWindow(Direction, , true)
+}
+
+SwapWindowWith(Index) {
+	_SwapWindow(, Index)
+}
+
+_SwapWindow(Direction?, Index?, ActivateOld?) {
+	if !monitor := GetMonitorByActive(true)
+		return
+
+	wins := WinGetListNormal(monitor)
+	pos := GetPosMap(wins)
+	wins := SortWinsColumnMajor(wins, pos)
+	wins := FilterOutObscuredWins(wins, pos)
+
+	win1 := WinExist("A")
+	win2 := _ByDirectionOrIndex(win1, wins, Direction?, Index?)
+	if !win1 || !win2 || win1 = win2
+		return
+
+	WithWinDelay(-1, WinMove, pos[win1].x, pos[win1].y, pos[win1].w, pos[win1].h, win2)
+	WithWinDelay(-1, WinMove, pos[win2].x, pos[win2].y, pos[win2].w, pos[win2].h, win1)
+	if ActivateOld ?? false
+		WinActivateMouse(win1)
+	else
+		WinActivateMouse(win2)
 }
 
 _ByDirectionOrIndex(GetCur, L, Direction?, Index?) {
@@ -165,7 +199,7 @@ _ByDirectionOrIndex(GetCur, L, Direction?, Index?) {
 			return
 		}
 	} else if IsSet(Direction) {
-		if !cur := GetCur()
+		if !cur := HasMethod(GetCur) ? GetCur() : GetCur
 			return
 
 		for i, x in L {
