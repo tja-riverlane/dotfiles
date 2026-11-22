@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 ; Win+Space - PowerToys FancyZones editor (layout switcher)
-#Space::+#`
+#Space::Send "+#``"
 ; #Space::return ; disable keyboard layout switching
 
 ; Win+M - minimise active
@@ -49,7 +49,7 @@
 
 ; Win+L - can't remap? :-(
 ; Win+; - lock screen
-#;::#l
+#;::DllCall("LockWorkStation")
 
 ; Shift+Win+Arrows - FancyZones moves
 +#Left:: {
@@ -78,7 +78,7 @@
 }
 
 ; Win+Arrows - media keys
-#Left::Media_Prev
-#Right::Media_Next
-#Up::Media_Stop
-#Down::Media_Play_Pause
+#Left::Send "{Media_Prev}"
+#Right::Send "{Media_Next}"
+#Up::Send "{Media_Stop}"
+#Down::Send "{Media_Play_Pause}"
