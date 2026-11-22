@@ -34,3 +34,15 @@
 ; Win+L - can't remap? :-(
 ; Win+; - lock screen
 #;::#l
+
+; Shift+Win+Arrows - FancyZones moves
++#Left::#Left
++#Right::#Right
++#Up::#Up
++#Down::#Down
+
+; Win+Arrows - media keys
+#Left::Media_Prev
+#Right::Media_Next
+#Up::Media_Stop
+#Down::Media_Play_Pause
