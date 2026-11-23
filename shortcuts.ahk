@@ -27,10 +27,17 @@
 
 ; Win+Tab - cycle focus to next monitor
 #Tab::CycleMonitors()
+; TODO: Shift+Win+Tab - swap monitors (send shortcut to FancyZones? it's super slow though)
+
+; Win+a/s/d - focus specific monitor
 #a::FocusMonitor(1)
 #s::FocusMonitor(2)
 #d::FocusMonitor(3)
-; TODO: Shift+Win+Tab - swap monitors (send shortcut to FancyZones? it's super slow though)
+
+; Shift+Win+a/s/d - alternative shortcut for the original Windows shortcuts
++#a::Send "#a"
++#s::Send "#s"
++#d::Send "#d"
 
 ; Win+J/K - next/prev window on current screen
 #j::CycleWindows(1)
