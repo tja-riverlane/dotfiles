@@ -10,6 +10,7 @@ args=(
 	--add-single-prunepath /var/lib/docker
 	--add-single-prunepath /var/lib/containers/storage
 	--add-single-prunepath /var/lib/flatpak
+	--add-prunefs 9p
 )
 
 for p in \
