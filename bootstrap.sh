@@ -48,8 +48,11 @@ fi
 
 [[ "$(id -u)" == 0 ]] && root=: || root=
 [[ "${CODESPACES-}" == true ]] && codespaces=: || codespaces=
+[[ "${WSL_DISTRO_NAME-}" == true ]] && wsl=: || wsl=
 
-if [[ $root ]]; then
+if [[ $root && $wsl ]]; then
+	branch=root-wsl; worktree=/
+elif [[ $root ]]; then
 	branch=root; worktree=/
 elif [[ $codespaces ]]; then
 	branch=codespaces; worktree=~
