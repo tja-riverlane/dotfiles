@@ -78,6 +78,13 @@ $if term=alacritty
 "\e[1;2D": backward-word
 $endif
 
+$if term=xterm
+"\e[1;2A": history-search-backward
+"\e[1;2B": history-search-forward
+"\e[1;2C": forward-word
+"\e[1;2D": backward-word
+$endif
+
 # for non RH/Debian xterm, can't hurt for RH/Debian xterm
 # "\eOH": beginning-of-line
 # "\eOF": end-of-line
