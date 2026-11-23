@@ -60,10 +60,12 @@ else
 	branch=home; worktree=~
 fi
 
+: "${GITHUB_USERNAME:=liskin}"
+
 dotfiles=~/src/dotfiles.git
 [[ -e "$dotfiles" ]] && o rm -rI "$dotfiles"
 o mkdir -p ~/src
-o git clone --no-checkout -b "$branch" --separate-git-dir="$dotfiles" https://github.com/liskin/dotfiles.git "$(mktemp -d)"
+o git clone --no-checkout -b "$branch" --separate-git-dir="$dotfiles" https://github.com/"$GITHUB_USERNAME"/dotfiles.git "$(mktemp -d)"
 
 function git-dotfiles { git -C "$dotfiles" "$@"; }
 
