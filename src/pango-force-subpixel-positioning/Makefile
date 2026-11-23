@@ -1,3 +1,5 @@
+include ~/_wsl_skip.mk
+
 BUILD := _build
 
 .PHONY: build

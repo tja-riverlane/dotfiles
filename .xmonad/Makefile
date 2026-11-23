@@ -1,3 +1,5 @@
+include ~/_wsl_skip.mk
+
 ARCH := $(shell uname -m)
 OS := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 XMONAD_DEPS := xmobar xmonad xmonad-contrib split regex

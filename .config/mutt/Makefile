@@ -1,6 +1,7 @@
 .PHONY: all
 all:
 
+ifneq "$(wildcard ~/.cache/mu/xapian/*)" ""
 all: muttrc-lists
 muttrc-lists: $(wildcard ~/.cache/mu/xapian/*)
 	mu find --fields=l body:mailman body:listinfo body:options \
@@ -8,8 +9,9 @@ muttrc-lists: $(wildcard ~/.cache/mu/xapian/*)
 		| sed -e 's/-bounces.*@/@/; s/^/lists /; s/\./\\./' \
 		| sort -u \
 		> $@
+endif
 
-ifeq "$(words $(wildcard $(HOME)/.password-store/app-pass/fastmail-imap.gpg))" "1"
+ifneq "$(wildcard $(HOME)/.password-store/app-pass/fastmail-imap.gpg)" ""
 all: muttrc-fastmail
 muttrc-fastmail: muttrc-fastmail.j2 Makefile $(HOME)/.password-store/app-pass/fastmail-imap.gpg
 	pass-extract-yaml-j2 app-pass/fastmail-imap | j2 -f yaml $< - > $@

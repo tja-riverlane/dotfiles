@@ -1,3 +1,6 @@
+# FIXME: build werge but nothing else (but perhaps check if there's a binary available now)
+include ~/_wsl_skip.mk
+
 BUILD_TARGETS ?=
 STACK_BUILDFLAGS ?=
 

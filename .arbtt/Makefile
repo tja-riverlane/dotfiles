@@ -1,4 +1,4 @@
-.PHONY:
+.PHONY: all
 all:
 
 all: categorize.cfg

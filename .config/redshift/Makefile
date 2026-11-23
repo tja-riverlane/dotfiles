@@ -1,4 +1,6 @@
-.PHONY:
+include ~/_wsl_skip.mk
+
+.PHONY: all
 all:
 
 all: redshift.conf

@@ -1,3 +1,5 @@
+include ~/_wsl_skip.mk
+
 .PHONY: all
 all: .Inconsolata.zip.unzip .Gohu.zip.unzip .NerdFontsSymbolsOnly.zip.unzip .IosevkaTerm.zip.unzip
 

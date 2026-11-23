@@ -1,3 +1,5 @@
+include ~/_wsl_skip.mk
+
 .PHONY: all
 all: Fixed7x13NFSymbolsMono-Regular.ttf
 

@@ -1,6 +1,7 @@
-.PHONY:
+.PHONY: all
 all:
 
+ifneq "$(wildcard $(HOME)/.password-store/web/hackage.pgp)" ""
 all: config
 ## generate global config
 config:
@@ -10,6 +11,7 @@ config:
 		-a 'password-command: pass-extract-field~web/hackage~password' \
 		-f
 	sed -i -e '/^password-command:/s/~/ /g' $@
+endif
 
 include ~/_gitignore.mk
 include ~/_help.mk

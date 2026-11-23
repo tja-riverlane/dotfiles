@@ -19,10 +19,7 @@ trap "rm -rf $(printf %q "$TMPDIR")" EXIT
 
 profile=~/.config/google-chrome/Default
 [[ -d "$profile" ]] || profile=~/.config/chromium/Default
-if [[ ! -d "$profile" ]]; then
-	echo "no profile found" >&2
-	exit 1
-fi
+[[ -d "$profile" ]] || exit 0 # quit if nothing to backup
 
 # backup bookmarks
 cp "$profile"/Bookmarks ./chrome-bookmarks.json

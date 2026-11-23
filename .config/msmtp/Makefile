@@ -1,7 +1,7 @@
 .PHONY: all
 all:
 
-ifeq "$(words $(wildcard $(HOME)/.password-store/app-pass/fastmail-imap.gpg))" "1"
+ifneq "$(wildcard $(HOME)/.password-store/app-pass/fastmail-imap.gpg)" ""
 all: config
 config: config.j2 Makefile $(HOME)/.password-store/app-pass/fastmail-imap.gpg
 	pass-extract-yaml-j2 app-pass/fastmail-imap | j2 -f yaml $< - > $@

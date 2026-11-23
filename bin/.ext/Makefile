@@ -23,7 +23,7 @@ LANGUAGETOOL_GITHUB_LASTTAG := languagetool-org/languagetool
 update: update-github
 update: update-gitlab
 
-all: haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper
+all: $(if $(filter pf% notes%,$(HOSTNAME)),haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper)
 haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .ext-hls ; ln -fsT $|/bin/$@ $@
 .ext-hls: .ext-hls-$(HLS_VERSION) ; ln -fsT $< $@
 .ext-hls-$(HLS_VERSION): .ext-hls-$(HLS_VERSION).tar.xz
@@ -44,7 +44,7 @@ haskell-language-server-$(HLS_GHC_VERSION) haskell-language-server-wrapper: | .e
 	$(CURL) -C - -o $@ https://downloads.haskell.org/~hls/haskell-language-server-$(HLS_VERSION)/haskell-language-server-$(HLS_VERSION)-$(if $(ARM64),aarch64-linux-ubuntu20,x86_64-linux-deb11).tar.xz
 
 ifeq "$(ARM64)" ""
-all: hlint
+all: $(if $(filter pf% notes%,$(HOSTNAME)),hlint)
 hlint: | .ext-hlint ; ln -fsT $|/$@ $@
 .ext-hlint: .ext-hlint-$(HLINT_VERSION) ; ln -fsT $< $@
 .ext-hlint-$(HLINT_VERSION):
@@ -53,7 +53,7 @@ hlint: | .ext-hlint ; ln -fsT $|/$@ $@
 		| tar -x -z -C $@ --strip-components=1
 endif
 
-all: .ext-languagetool
+all: $(if $(filter pf% notes%,$(HOSTNAME)),.ext-languagetool)
 .SKIP_GITIGNORE: .ext-languagetool
 .ext-languagetool: .ext-languagetool-$(LANGUAGETOOL_VERSION) ; ln -fsT $< $@
 .ext-languagetool-$(LANGUAGETOOL_VERSION): .ext-languagetool-$(LANGUAGETOOL_VERSION).zip
@@ -66,7 +66,7 @@ all: .ext-languagetool
 .ext-languagetool-$(LANGUAGETOOL_VERSION).zip:
 	$(CURL) -C - -o $@ https://languagetool.org/download/LanguageTool-$(LANGUAGETOOL_VERSION:v%=%).zip
 
-all: .ext-fitsdk
+all: $(if $(filter pf% notes%,$(HOSTNAME)),.ext-fitsdk)
 .SKIP_GITIGNORE: .ext-fitsdk
 .ext-fitsdk: .ext-fitsdk-$(FITSDK_VERSION) ; ln -fsT $< $@
 .ext-fitsdk-$(FITSDK_VERSION): .ext-fitsdk-$(FITSDK_VERSION).zip
