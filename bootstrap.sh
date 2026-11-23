@@ -48,7 +48,7 @@ fi
 
 [[ "$(id -u)" == 0 ]] && root=: || root=
 [[ "${CODESPACES-}" == true ]] && codespaces=: || codespaces=
-[[ "${WSL_DISTRO_NAME-}" == true ]] && wsl=: || wsl=
+[[ "$(systemd-detect-virt || :)" == "wsl" ]] && wsl=: || wsl=
 
 if [[ $root && $wsl ]]; then
 	branch=root-wsl; worktree=/
