@@ -34,10 +34,10 @@
 #s::FocusMonitor(2)
 #d::FocusMonitor(3)
 
-; Shift+Win+a/s/d - alternative shortcut for the original Windows shortcuts
-+#a::Send "#a"
-+#s::Send "#s"
-+#d::Send "#d"
+; Ctrl+Win+a/s/d - alternative shortcut for the original Windows shortcuts
+^#a::Send "#a"
+^#s::Send "#s"
+^#d::Send "#d"
 
 ; Win+J/K - next/prev window on current screen
 #j::CycleWindows(1)
