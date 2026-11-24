@@ -62,7 +62,7 @@ export DEBUGINFOD_PROGRESS=1
 export DEBUGINFOD_URLS="https://debuginfod.debian.net"
 
 if [ -n "$_LISKIN_NVIDIA" ]; then
-	export VK_ICD_FILENAMES="/home/tomi/.local/share/vulkan/icd.d/nvidia_icd.json"
+	export VK_ICD_FILENAMES=~/.local/share/vulkan/icd.d/nvidia_icd.json
 	unset __EGL_VENDOR_LIBRARY_FILENAMES
 else
 	VK_ICD_FILENAMES="$(printf "%s:" /usr/share/vulkan/icd.d/intel_icd.json)"
