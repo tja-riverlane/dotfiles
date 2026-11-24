@@ -1,11 +1,7 @@
-#!  sh
-# ^ sourced from /etc/X11/Xsession via ~/.xsessionrc
+#!  bash
 # shellcheck disable=SC2239
 
-if [ -z "${WSL+set}" ]; then
-	if [ "$(systemd-detect-virt || :)" = "wsl" ]; then
-		export WSL=1
-	else
-		export WSL=
-	fi
+if [[ ! "${WSL+set}" ]]; then
+	[[ "$(systemd-detect-virt || :)" = "wsl" ]] && WSL=1 || WSL=
+	export WSL
 fi

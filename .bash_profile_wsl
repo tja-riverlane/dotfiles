@@ -1,0 +1,22 @@
+#!  bash
+# shellcheck disable=SC2239
+
+. "$HOME"/.bashrc.d/05_env_wsl.sh
+
+if [[ $WSL ]]; then
+	# import some environment variables into systemd once
+	# (Xsession imports much more but we don't need/want most of that)
+	if ! systemctl --user show-environment | grep -q ^_LISKIN_ENV_IMPORTED=; then
+		. "$HOME"/.bashrc.d/10_env.sh
+
+		_LISKIN_ENV_IMPORTED=1 systemctl --user import-environment \
+			_LISKIN_ENV_IMPORTED \
+			PATH \
+			WSL \
+			#
+	fi
+
+	# export SSH_AUTH_SOCK from systemd
+	eval "$(systemctl --user show-environment | grep ^SSH_AUTH_SOCK= || :)"
+	export SSH_AUTH_SOCK
+fi
