@@ -51,7 +51,7 @@ fi
 [[ "$(systemd-detect-virt || :)" == "wsl" ]] && wsl=: || wsl=
 
 if [[ $root && $wsl ]]; then
-	branch=root-wsl; worktree=/
+	branch="root-wsl"; worktree=/
 elif [[ $root ]]; then
 	branch=root; worktree=/
 elif [[ $codespaces ]]; then
