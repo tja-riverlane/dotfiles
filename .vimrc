@@ -259,6 +259,7 @@ set splitright
 if exists('&tabclose')
 	set tabclose=left,uselast
 endif
+set tabpagemax=1000
 set viewoptions-=options
 
 " plugins {{{1
