@@ -22,11 +22,13 @@ done
 export MAIL=/var/mail/tomi
 
 # various hacks
-export LD_LIBRARY_PATH=~/src/pango-force-subpixel-positioning/_build
-export QT_AUTO_SCREEN_SCALE_FACTOR=0
-export QT_QPA_PLATFORMTHEME=gnome
-export SAL_USE_VCLPLUGIN=gtk3
-export _JAVA_AWT_WM_NONREPARENTING=1
+if [ "$WSL" != 1 ]; then
+	export LD_LIBRARY_PATH=~/src/pango-force-subpixel-positioning/_build
+	export QT_AUTO_SCREEN_SCALE_FACTOR=0
+	export QT_QPA_PLATFORMTHEME=gnome
+	export SAL_USE_VCLPLUGIN=gtk3
+	export _JAVA_AWT_WM_NONREPARENTING=1
+fi
 export LESS="--quit-if-one-screen --no-init --RAW-CONTROL-CHARS --mouse --wheel-lines=3 --LONG-PROMPT"
 
 export BROWSER=google-chrome
