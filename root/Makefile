@@ -36,6 +36,7 @@ $(strip
 	bin/bat
 	bin/git-repo-name
 	bin/liskin-make-gitignore
+	bin/tmux-new-window-or-exec
 	bootstrap.sh
 )
 endef
