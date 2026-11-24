@@ -312,3 +312,6 @@
 [submodule "src-haskell/werge"]
 	path = src-haskell/werge
 	url = https://github.com/exaexa/werge
+[submodule ".config/AutoHotKey/deps/Acc-v2"]
+	path = .config/AutoHotKey/deps/Acc-v2
+	url = https://github.com/Descolada/Acc-v2
