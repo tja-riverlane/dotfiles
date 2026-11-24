@@ -1,2 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+# skip in WSL
+[[ ${WSL-} != 1 ]] || exit 0
+
 exec xmonadctl-raw save-workspaces

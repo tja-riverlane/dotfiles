@@ -12,6 +12,8 @@ cd ~/backup/local/libvirt
 
 [[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance
 
+[[ -x /usr/bin/virsh ]] || exit 0  # quit if nothing to backup
+
 # make sure libvirtd is started in the background and won't get killed
 systemd-run --quiet --collect --wait --user --property="KillMode=process" -- virsh connect
 

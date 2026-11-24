@@ -7,6 +7,9 @@ if compgen -v | grep ^GIT_; then
 	exit 1
 fi
 
+# quit if nothing to backup
+[[ -d ~/taskwiki ]] || exit 0
+
 cd ~/taskwiki
 
 [[ "$(git symbolic-ref HEAD)" == refs/heads/@(master|main) ]]  # quit if doing manual maintenance

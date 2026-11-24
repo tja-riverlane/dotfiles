@@ -48,7 +48,9 @@ export BAT_STYLE=plain
 
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
-export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
+if [ "$WSL" != 1 ]; then
+	export MPD_HOST="$XDG_RUNTIME_DIR"/mpd/socket
+fi
 
 export JAVA_HOME=/usr/lib/jvm/default-java
 export JDKHOME="$JAVA_HOME"

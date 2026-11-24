@@ -1,5 +1,6 @@
 [Unit]
 Description=liskin-media mpris-daemon
+ConditionVirtualization=!wsl
 
 [Service]
 ExecStart=%h/bin/liskin-media mpris-daemon

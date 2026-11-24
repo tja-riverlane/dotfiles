@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
+
+# quit if no mpd
+[[ -S "${MPD_HOST-}" ]] || exit 0
+
 exec mpd-save snapshot
