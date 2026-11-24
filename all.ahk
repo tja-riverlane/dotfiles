@@ -5,6 +5,7 @@ DllCall("SetThreadDpiAwarenessContext", "ptr", -4, "ptr")
 
 ; deps
 #Include "lib/Acc.ahk"
+#Include "lib/groups.ahk"
 #Include "lib/with.ahk"
 #Include "lib/win.ahk"
 

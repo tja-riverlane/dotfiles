@@ -108,3 +108,8 @@
 #Right::Send "{Media_Next}"
 #Up::Send "{Media_Stop}"
 #Down::Send "{Media_Play_Pause}"
+
+; Shift+End - Shift-Insert to compensate for X13's reduced keyboard
+#HotIf WinActive("ahk_group Terminals")
++End::Send "+{Insert}"
+#HotIf
