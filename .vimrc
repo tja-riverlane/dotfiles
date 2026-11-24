@@ -136,6 +136,17 @@ if has('nvim')
 	vmap <LeftRelease> "*ygv
 	vmap <2-LeftRelease> "*ygv
 	vmap <3-LeftRelease> "*ygv
+
+	" no primary selection on Windows/WSL
+	" (there is in Xwayland but is isolated from Windows)
+	if $WSL == "1" && !empty($WAYLAND_DISPLAY)
+		let g:clipboard = #{
+			\ name: 'wl-copy-wsl',
+			\ cache_enabled: 1,
+			\ copy: {'+': ['wl-copy', '--type', 'text/plain'], '*': ['wl-copy', '--type', 'text/plain']},
+			\ paste: {'+': ['wl-paste', '--no-newline'], '*': ['wl-paste', '--no-newline']},
+		\ }
+	endif
 endif
 
 " set terminal title regardless of whether it can be restored
