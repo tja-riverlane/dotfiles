@@ -1,5 +1,5 @@
 #!  bash
 # shellcheck disable=SC2239
 
-. ~/.bash_profile_xdm
-. ~/.bashrc
+. "$HOME"/.bash_profile_xdm
+. "$HOME"/.bashrc
