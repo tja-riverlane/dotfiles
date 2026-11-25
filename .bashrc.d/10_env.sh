@@ -39,11 +39,6 @@ export PSVIEWER=zathura
 export SSH_ASKPASS=/usr/bin/ssh-askpass
 export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
-if [ "$WSL" = 1 ]; then
-	export SSH_SK_HELPER=~/.wsl/bin/ssh-sk-helper.exe
-	export SSH_PKCS11_HELPER=~/.wsl/bin/ssh-pkcs11-helper.exe
-fi
-
 export RIPGREP_CONFIG_PATH=~/.config/ripgreprc
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_DEFAULT_OPTS='--preview-window=border-left --info=inline-right'
