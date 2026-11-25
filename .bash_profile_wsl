@@ -12,6 +12,8 @@ if [[ $WSL ]]; then
 		_LISKIN_ENV_IMPORTED=1 systemctl --user import-environment \
 			_LISKIN_ENV_IMPORTED \
 			PATH \
+			SSH_PKCS11_HELPER \
+			SSH_SK_HELPER \
 			WSL \
 			#
 	fi
