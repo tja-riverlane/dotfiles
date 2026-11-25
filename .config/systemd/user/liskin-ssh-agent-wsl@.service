@@ -1,0 +1,7 @@
+[Unit]
+Description=ssh-agent pipe to Windows ssh-agent
+Requires=liskin-ssh-agent-wsl.socket
+
+[Service]
+ExecStart=%h/.wsl/bin/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent
+StandardInput=socket

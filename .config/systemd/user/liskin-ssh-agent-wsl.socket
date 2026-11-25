@@ -1,0 +1,14 @@
+[Unit]
+Description=ssh-agent pipe to Windows ssh-agent
+Before=graphical-session-pre.target
+ConditionVirtualization=wsl
+
+[Socket]
+SocketMode=0600
+Accept=true
+ListenStream=%t/ssh-agent-wsl
+ExecStartPost=/usr/bin/systemctl --user set-environment SSH_AUTH_SOCK=%t/ssh-agent-wsl
+ExecStopPre=/usr/bin/systemctl --user unset-environment SSH_AUTH_SOCK
+
+[Install]
+WantedBy=sockets.target
