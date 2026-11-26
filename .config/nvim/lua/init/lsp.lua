@@ -5,24 +5,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			buffer = args.buf,
 			desc = "LSP code action",
 		})
-
-		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-		if client.name == "copilot" and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, args.buf) then
-			vim.lsp.inline_completion.enable(true, { bufnr = args.buf })
-
-			vim.keymap.set('i', '<C-Space>', vim.lsp.inline_completion.get, {
-				buffer = args.buf,
-				desc = "LSP: accept inline completion",
-			})
-			vim.keymap.set('i', '<C-X>]', function() vim.lsp.inline_completion.select({ count = 1 }) end, {
-				buffer = args.buf,
-				desc = "LSP: next inline completion",
-			})
-			vim.keymap.set('i', '<C-X>[', function() vim.lsp.inline_completion.select({ count = -1 }) end, {
-				buffer = args.buf,
-				desc = "LSP: prev inline completion",
-			})
-		end
 	end,
 })
 
@@ -123,61 +105,6 @@ vim.lsp.start = (function(orig)
 		return orig(config, opts)
 	end
 end)(vim.lsp.start)
-
--- wrap inline completion (copilot) text to textwidth for text/markdown files
--- see https://github.com/neovim/neovim/issues/42841
--- see https://github.com/neovim/neovim/issues/41369
-local function wrap_text(str, width)
-	local regex_space = vim.regex("^.*\\%<" .. tostring(width + 2) .. "v\\zs ")
-	local regex_width = vim.regex("\\%" .. tostring(width + 1) .. "v")
-
-	local function wrap_text_line(line)
-		local wrapped = {}
-		while vim.fn.strdisplaywidth(line) > width do
-			local space_start, space_end = regex_space:match_str(line)
-			if not space_start then
-				-- no space found, find byte for virtual column width+1 and wrap there
-				space_start, space_end = regex_width:match_str(line)
-				if not space_start then
-					-- fallback to width as a last resort
-					space_start, space_end = width, width
-				end
-			end
-
-			table.insert(wrapped, line:sub(1, space_start))
-			line = line:sub(space_end + 1)
-		end
-		if #line > 0 then
-			table.insert(wrapped, line)
-		end
-		return table.concat(wrapped, "\n")
-	end
-
-	return vim.iter(vim.gsplit(str, "\n", { plain = true })):map(wrap_text_line):join("\n")
-end
-
-require('vim.lsp.inline_completion')
----@diagnostic disable-next-line: inject-field
-require('vim.lsp._capability').all.inline_completion.handler = (function(orig)
-	return function(self, ...)
-		local err, result, ctx = ...
-		if not err and result and ctx then
-			local ft = vim.bo[ctx.bufnr].filetype
-			local tw = vim.bo[ctx.bufnr].textwidth
-			if tw > 0 and (ft == "text" or ft == "markdown") then
-				local items = result.items or result
-				for _, item in ipairs(items) do
-					if item.insertText then
-						item.insertText = wrap_text(item.insertText, tw)
-					end
-				end
-			end
-		end
-
-		return orig(self, ...)
-	end
----@diagnostic disable-next-line: undefined-field
-end)(require('vim.lsp._capability').all.inline_completion.handler)
 
 -- see "lsp_config" and ~/.vim/projectrc for LSP config
 -- see "plug_none_ls" for null-ls/none-ls

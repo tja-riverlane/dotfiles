@@ -8,6 +8,7 @@ require 'init.diagnostic'
 require 'init.diagnostic_delay'
 require 'init.lsp_config' -- see also ~/.vim/projectrc
 require 'init.lsp'
+require 'init.lsp_copilot'
 require 'init.plug_treesitter'
 require 'init.plug_treesitter_textobjects'
 require 'init.plug_treesitter_context'
