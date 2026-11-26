@@ -185,7 +185,8 @@
 	url = https://github.com/kylechui/nvim-surround
 [submodule ".local/share/nvim/site/bundle/cmp-snippy"]
 	path = .local/share/nvim/site/bundle/cmp-snippy
-	url = https://github.com/dcampos/cmp-snippy
+	# url = https://github.com/dcampos/cmp-snippy
+	url = https://github.com/liskin/cmp-snippy
 [submodule ".local/share/nvim/site/bundle/nvim-snippy"]
 	path = .local/share/nvim/site/bundle/nvim-snippy
 	url = https://github.com/dcampos/nvim-snippy
