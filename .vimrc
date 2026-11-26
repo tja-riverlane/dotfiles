@@ -122,6 +122,10 @@ endif
 " fix C-Space mappings in terminal {{{3
 map <C-@> <C-Space>
 
+" fix C-_ in Windows Terminal (and maybe others)
+map <C--> <C-_>
+map! <C--> <C-_>
+
 " terminal timeouts, etc. {{{3
 set lazyredraw
 set notimeout
