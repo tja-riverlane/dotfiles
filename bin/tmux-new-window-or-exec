@@ -6,7 +6,7 @@ if [[ "${LESS-}" ]]; then
 fi
 
 if [[ $TMUX ]]; then
-	tmux new-window ${LESS+-e "LESS=$LESS"} -- "$@"
+	tmux new-window ${LESS+-e "LESS=$LESS"} ${GIT_DIR+-e "GIT_DIR=$GIT_DIR"} -- "$@"
 else
 	exec -- "$@"
 fi
