@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eu
+
+_powershell_bin=$(readlink -f ~/.wsl/bin/powershell.exe)
+if [[ -x "$_powershell_bin" ]]; then
+	_powershell_script=$(wslpath -w "$1")
+	if [[ $_powershell_script == "C:\\"* ]]; then
+		# scripts local to Windows don't need execution policy bypass
+		exec "$_powershell_bin" -ExecutionPolicy RemoteSigned -File "$_powershell_script" "${@:2}"
+	else
+		# "\\wsl.localhost\Debian\…" is considered remote and needs bypass
+		exec "$_powershell_bin" -ExecutionPolicy Bypass -File "$_powershell_script" "${@:2}"
+	fi
+fi

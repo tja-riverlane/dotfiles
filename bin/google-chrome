@@ -2,11 +2,9 @@
 
 set -eu
 
-export FONTCONFIG_FILE=~/.config/fontconfig/browser.conf
-
-function join { local IFS="$1"; shift; echo "$*"; }
-
-if [[ -x /usr/bin/google-chrome ]]; then
+if [[ ${WSL-} == 1 ]]; then
+	exec wsl-start ~/.wsl/bin/.start-liskin-bin/sensible-browser.lnk "$@"
+elif [[ -x /usr/bin/google-chrome ]]; then
 	bin=/usr/bin/google-chrome
 elif [[ -x /usr/bin/chromium ]]; then
 	bin=/usr/bin/chromium
@@ -47,6 +45,9 @@ enable_features+=(
 # enable overlay scrollbars
 enable_features+=(OverlayScrollbar)
 
+function join { local IFS="$1"; shift; echo "$*"; }
+
+FONTCONFIG_FILE=~/.config/fontconfig/browser.conf \
 exec \
 	"$bin" "${flags[@]}" \
 	--disable-features="$(join "," "${disable_features[@]}")" \
