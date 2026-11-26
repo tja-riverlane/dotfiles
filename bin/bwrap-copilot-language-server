@@ -9,6 +9,12 @@ fi
 
 copilot_language_server=$(mise which copilot-language-server)
 
+mkdir -p \
+	~/.cache/Microsoft/DeveloperTools \
+	~/.config/github-copilot \
+	~/.copilot \
+	#
+
 exec bwrap-home \
 	--home-tmpfs --tmpfs \
 	--mount-rw ~/.cache/Microsoft/DeveloperTools \
