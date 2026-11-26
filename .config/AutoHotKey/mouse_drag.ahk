@@ -27,7 +27,7 @@ _DragMoveResize(Button, Resize) {
 	MouseGetPos(&mouseX1, &mouseY1)
 	WinGetPos(&winX1, &winY1, &winW, &winH)
 	if Resize
-		MouseMove(winX1 + winW, winY1 + winH)
+		MouseMove(winX1 + winW - 20, winY1 + winH - 20)
 	Loop {
 		if !GetKeyState(Button, "P") ; Break if button has been released.
 			break
@@ -36,7 +36,7 @@ _DragMoveResize(Button, Resize) {
 		if !Resize
 			WinMove(winX1 + mouseX2 - mouseX1, winY1 + mouseY2 - mouseY1)
 		else
-			WinMove(, , mouseX2 - winX1, mouseY2 - winY1)
+			WinMove(, , mouseX2 - winX1 + 20, mouseY2 - winY1 + 20)
 	}
 	if Resize
 		MouseMove(mouseX1, mouseY1)
