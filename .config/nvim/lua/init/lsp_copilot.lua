@@ -1,3 +1,9 @@
+local wrap_filetypes = {
+	gitcommit = true,
+	markdown = true,
+	text = true,
+}
+
 -- wrap inline completion (copilot) text to textwidth for text/markdown files
 -- see https://github.com/neovim/neovim/issues/42841
 -- see https://github.com/neovim/neovim/issues/41369
@@ -38,7 +44,7 @@ require('vim.lsp._capability').all.inline_completion.handler = (function(orig)
 		if not err and result and ctx then
 			local ft = vim.bo[ctx.bufnr].filetype
 			local tw = vim.bo[ctx.bufnr].textwidth
-			if tw > 0 and (ft == "text" or ft == "markdown") then
+			if tw > 0 and wrap_filetypes[ft] then
 				local items = result.items or result
 				for _, item in ipairs(items) do
 					if item.insertText then
