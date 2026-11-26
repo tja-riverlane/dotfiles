@@ -19,4 +19,9 @@ DllCall("SetThreadDpiAwarenessContext", "ptr", -4, "ptr")
 #Include "ctrl_w.ahk"
 
 ; Win+Q - reload
-#q::Reload
+#q:: {
+	Reload
+
+	; trigger tacky-borders reload as it keeps losing borders on some windows
+	Run EnvGet("USERPROFILE") "\bin\tacky-borders.exe.lnk reload"
+}
