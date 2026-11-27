@@ -59,9 +59,16 @@ require('vim.lsp._capability').all.inline_completion.handler = (function(orig)
 ---@diagnostic disable-next-line: undefined-field
 end)(require('vim.lsp._capability').all.inline_completion.handler)
 
+local function longest_common_prefix(s1, s2)
+	local prefix = 0
+	while prefix < #s1 and prefix < #s2 and s1[prefix + 1] == s2[prefix + 1] do
+		prefix = prefix + 1
+	end
+	return s1:sub(1, prefix)
+end
+
 local function on_accept_word(item)
 	if type(item.insert_text) == "string" and item.range then
-		local insert_lines = vim.split(item.insert_text, "\n", { plain = true })
 		local current_lines = vim.api.nvim_buf_get_text(
 			item.range.buf,
 			item.range.start_row,
@@ -71,23 +78,18 @@ local function on_accept_word(item)
 			{}
 		)
 
-		local row = 1
-		while row <= #insert_lines and row <= #current_lines and insert_lines[row] == current_lines[row] do
-			row = row + 1
-		end
+		-- XXX: vim.lsp._changetracking sends the correct line endings for the
+		-- buffer to the LSP, but vim.lsp.inline_completion uses \n everywhere
+		-- regardless - for good reason probably, as copilot-language-server
+		-- seems to always use \n anyway
+		local current_text = table.concat(current_lines, '\n')
 
-		local col = 1
-		if row <= #insert_lines and row <= #current_lines then
-			while col <= #insert_lines[row] and col <= #current_lines[row] and insert_lines[row][col] == current_lines[row][col] do
-				col = col + 1
-			end
+		local prefix = longest_common_prefix(current_text, item.insert_text)
+		local new_text = item.insert_text:sub(#prefix + 1)
+		local word = string.match(new_text, "%s*[^%s]+%s?")
+		if word then
+			item.insert_text = prefix .. word
 		end
-
-		local word = string.match(insert_lines[row]:sub(col), "%s*[^%s]*")
-		item.insert_text = table.concat(vim.list_slice(current_lines, 1, row - 1), "\n")
-			.. (row <= #current_lines and "" or "\n")
-			.. (row <= #insert_lines and col <= #insert_lines[row] and insert_lines[row]:sub(1, col - 1) or "")
-			.. word
 	end
 
 	return item
