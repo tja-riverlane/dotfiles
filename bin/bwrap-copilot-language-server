@@ -2,7 +2,9 @@
 
 set -eu -o pipefail
 
-if [[ "${HOME%/}"/ == "${PWD%/}"/* ]]; then
+real_tmp=$(readlink -f /tmp)
+
+if [[ "${HOME%/}"/ == "${PWD%/}"/* || "${real_tmp%/}/" == "${PWD%/}"/* ]]; then
 	mkdir -p "${XDG_RUNTIME_DIR:?}"/bwrap-node-copilot
 	cd "${XDG_RUNTIME_DIR:?}"/bwrap-node-copilot
 fi
