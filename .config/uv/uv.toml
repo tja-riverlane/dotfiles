@@ -1,4 +1,12 @@
+preview-features = [
+	"index-exclude-newer",
+]
+
 python-downloads = "manual"
 python-preference = "system"
 
+[[index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
 exclude-newer = "1 week"
