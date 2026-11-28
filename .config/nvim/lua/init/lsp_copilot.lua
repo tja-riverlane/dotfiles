@@ -95,21 +95,26 @@ local function on_accept_word(item)
 	return item
 end
 
+local on_accept = nil
+
 vim.api.nvim_create_autocmd('LspAttach', {
 	callback = function(args)
 		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 		if client.name == "copilot" and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, args.buf) then
 			vim.lsp.inline_completion.enable(true, { bufnr = args.buf })
 
-			vim.keymap.set('i', '<C-Space>', vim.lsp.inline_completion.get, {
+			vim.keymap.set('i', '<C-Space>', function()
+				vim.lsp.inline_completion.get({ on_accept = on_accept })
+			end, {
 				buffer = args.buf,
 				desc = "LSP: accept inline completion",
 			})
 			vim.keymap.set('i', '<C-X><C-Space>', function()
-				vim.lsp.inline_completion.get({ on_accept = on_accept_word })
+				if on_accept then on_accept = nil else on_accept = on_accept_word end
+				vim.lsp.inline_completion.get({ on_accept = on_accept })
 			end, {
 				buffer = args.buf,
-				desc = "LSP: accept inline completion",
+				desc = "LSP: accept inline completion (flip between word and full completion)",
 			})
 			vim.keymap.set('i', '<C-X>]', function() vim.lsp.inline_completion.select({ count = 1 }) end, {
 				buffer = args.buf,
